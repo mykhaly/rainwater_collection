@@ -17,8 +17,8 @@ class C:
 
 foo = \
 [
-    [C(1, 1.2), C(-2, 1), C(2, 1)],
-    [C(-2, 1), C(1, 1), C(2, 1)],
+    [C(1, 6), C(-2, 1), C(2, 1)],
+    [C(-2, 1), C(-2, 1), C(2, 1)],
     [C(1, 1), C(1, 1), C(2, 1)]
 ]
 
@@ -48,8 +48,19 @@ for min_neighb in curr_min_neighb:
 print "curr_min_neighb_diffs  ", curr_min_neighb_diffs
 diff_sum = sum(curr_min_neighb_diffs)
 the_most_min_diff = min(curr_min_neighb_diffs)
-if the_most_min_diff * len(curr_min_neighb) > foo[0][0].w:
+print "the most min diff  ", the_most_min_diff
+if the_most_min_diff * len(curr_min_neighb) >= foo[0][0].w:
     amount_of_water = foo[0][0].w / len(curr_min_neighb)
+    if amount_of_water > the_most_min_diff:
+        amount_of_water = the_most_min_diff
+    if foo[curr_min_neighb[0][0]][curr_min_neighb[0][1]].height + amount_of_water > foo[0][0].t:
+        amount_of_water = foo[0][0].t - foo[curr_min_neighb[0][0]][curr_min_neighb[0][1]].height
+        for min_neighb in curr_min_neighb:
+            foo[min_neighb[0]][min_neighb[1]].w += amount_of_water
+            foo[0][0].w -= amount_of_water
+        print foo[0][0].w
+        amount_of_water = float(foo[0][0].w / (len(curr_min_neighb) + float(1)))
+        print amount_of_water
     for min_neighb in curr_min_neighb:
         foo[min_neighb[0]][min_neighb[1]].w += amount_of_water
         foo[0][0].w -= amount_of_water
